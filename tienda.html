@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestidos y Accesorios del Niño Dios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 1.8em;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: scale(1.02);
+        }
+
+        .btn-cart {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-cart:hover {
+            background: #5568d3;
+            transform: scale(1.02);
+        }
+
+        .cart-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .cart-float:hover {
+            transform: scale(1.1);
+            background: #5568d3;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f5576c;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            color: #667eea;
+        }
+
+        .close-btn {
+            font-size: 2em;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .remove-btn {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .remove-btn:hover {
+            background: #d64456;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #667eea;
+            text-align: right;
+        }
+
+        .total-label {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .total-amount {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .payment-options {
+            margin-top: 20px;
+        }
+
+        .payment-title {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-cart-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌟 Vestidos del Niño Dios 🌟</h1>
+            <p class="subtitle">Hermosos vestidos y accesorios para tu Niño Dios</p>
+        </header>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <div class="cart-float" onclick="openCart()">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <div class="modal" id="cartModal" onclick="closeCartOnOutsideClick(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title">Tu Carrito</h2>
+                <button class="close-btn" onclick="closeCart()">&times;</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal" style="display: none;">
+                <div class="total-label">Total:</div>
+                <div class="total-amount" id="totalAmount">$0</div>
+            </div>
+            <div class="payment-options" id="paymentOptions" style="display: none;">
+                <div class="payment-title">Opciones de Pago:</div>
+                <button class="btn btn-whatsapp" onclick="checkoutWhatsApp()">
+                    💬 Pagar por WhatsApp
+                </button>
+                <button class="btn btn-cart" onclick="checkoutMercadoPago()">
+                    💳 Pagar con Mercado Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN - EDITA ESTOS VALORES
+        const CONFIG = {
+            whatsappNumber: '5216717677673', // CAMBIA ESTO: Tu número con código de país (52 para México)
+            mercadoPagoLink: 'https://mpago.la/tulink', // CAMBIA ESTO: Tu link de Mercado Pago
+            businessName: 'Vestidos del Niño Dios' // CAMBIA ESTO: Nombre de tu negocio
+        };
+
+        // PRODUCTOS - Edita esta lista con tus productos reales
+        const products = [
+            {
+                id: 1,
+                name: "Vestido Tradicional Blanco",
+                description: "Hermoso vestido blanco con detalles dorados, ideal para celebraciones",
+                price: 450,
+                icon: "👶"
+            },
+            {
+                id: 2,
+                name: "Vestido Rey Mago",
+                description: "Elegante vestido con corona y manto, perfecto para días festivos",
+                price: 550,
+                icon: "👑"
+            },
+            {
+                id: 3,
+                name: "Vestido Sagrado Corazón",
+                description: "Vestido rojo con detalles bordados a mano",
+                price: 480,
+                icon: "❤️"
+            },
+            {
+                id: 4,
+                name: "Set de Accesorios",
+                description: "Incluye corona, cetro y zapatos dorados",
+                price: 250,
+                icon: "✨"
+            },
+            {
+                id: 5,
+                name: "Vestido Bautizo",
+                description: "Vestido blanco para bautizo con encajes finos",
+                price: 520,
+                icon: "🕊️"
+            },
+            {
+                id: 6,
+                name: "Manto Virgen de Guadalupe",
+                description: "Manto decorado con la imagen de la Virgen",
+                price: 380,
+                icon: "🌹"
+            }
+        ];
+
+        let cart = [];
+
+        // Renderizar productos
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.icon}</div>
+                    <div class="product-info">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-description">${product.description}</div>
+                        <div class="product-price">$${product.price} MXN</div>
+                        <button class="btn btn-whatsapp" onclick="contactWhatsApp(${product.id})">
+                            💬 Consultar por WhatsApp
+                        </button>
+                        <button class="btn btn-cart" onclick="addToCart(${product.id})">
+                            🛒 Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Agregar al carrito
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCartCount();
+                showNotification('✅ Producto agregado al carrito');
+            }
+        }
+
+        // Remover del carrito
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            renderCart();
+            if (cart.length === 0) {
+                showNotification('🛒 Carrito vacío');
+            }
+        }
+
+        // Actualizar contador del carrito
+        function updateCartCount() {
+            const countElement = document.getElementById('cartCount');
+            countElement.textContent = cart.length;
+            countElement.style.display = cart.length > 0 ? 'flex' : 'none';
+        }
+
+        // Abrir carrito
+        function openCart() {
+            document.getElementById('cartModal').classList.add('active');
+            renderCart();
+        }
+
+        // Cerrar carrito
+        function closeCart() {
+            document.getElementById('cartModal').classList.remove('active');
+        }
+
+        // Cerrar carrito al hacer clic fuera
+        function closeCartOnOutsideClick(event) {
+            if (event.target.id === 'cartModal') {
+                closeCart();
+            }
+        }
+
+        // Renderizar carrito
+        function renderCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const cartTotalDiv = document.getElementById('cartTotal');
+            const paymentOptionsDiv = document.getElementById('paymentOptions');
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <p>Tu carrito está vacío</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">Agrega productos para continuar</p>
+                    </div>
+                `;
+                cartTotalDiv.style.display = 'none';
+                paymentOptionsDiv.style.display = 'none';
+                return;
+            }
+
+            cartItemsDiv.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.icon} ${item.name}</div>
+                        <div class="cart-item-price">$${item.price} MXN</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${index})">Eliminar</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('totalAmount').textContent = `$${total} MXN`;
+            cartTotalDiv.style.display = 'block';
+            paymentOptionsDiv.style.display = 'block';
+        }
+
+        // Contactar por WhatsApp (producto individual)
+        function contactWhatsApp(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const message = `Hola! Me interesa el siguiente producto:\n\n📦 ${product.name}\n💵 $${product.price} MXN\n\n${product.description}`;
+            const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Checkout por WhatsApp
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showNotification('⚠️ El carrito está vacío');
+                return;
+            }
+
+            const items = cart.map((item, index) => `${index + 1}. ${item.name} - $${item.price} MXN`).join('\n');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const message = `Hola! Quiero hacer el siguiente pedido:\n\n${items}\n\n💰 Total: $${total} MXN\n\n¿Cuáles son los métodos de pago disponibles?`;
+            
+            const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+            showNotification('📱 Abriendo WhatsApp...');
+        }
+
+        // Checkout Mercado Pago
+        function checkoutMercadoPago() {
+            if (cart.length === 0) {
+                showNotification('⚠️ El carrito está vacío');
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            // Si no has configurado Mercado Pago, mostrar alerta
+            if (CONFIG.mercadoPagoLink === 'https://mpago.la/tulink') {
+                alert(`Para usar Mercado Pago:\n\n1. Ve a mercadopago.com.mx\n2. Crea un link de pago\n3. Edita CONFIG.mercadoPagoLink en el código\n\nTotal a pagar: $${total} MXN`);
+                return;
+            }
+
+            // Redirigir a Mercado Pago
+            window.open(CONFIG.mercadoPagoLink, '_blank');
+            showNotification('💳 Redirigiendo a Mercado Pago...');
+        }
+
+        // Mostrar notificación
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateCartCount();
+        });
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeCart();
+            }
+        });
+    </script>
+</body>
+</html>
